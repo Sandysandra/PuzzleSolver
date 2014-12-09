@@ -51,6 +51,10 @@ public class ParseInput {
 	//each solution contains all the tiles that compose the board.
 	public ArrayList<HashMap<Integer,ArrayList<Unit>>> soluInterface = new ArrayList<HashMap<Integer,ArrayList<Unit>>>();
 
+	public void setBruteFlag(boolean brute){
+		this.brute = brute;
+	}
+	
 	public void process() {
 		start = System.currentTimeMillis();
 		tmpStart = start;
