@@ -36,7 +36,7 @@ public class ParseInput {
 	
 	long start;
 	long tmpStart;
-	boolean brute = false;
+	boolean brute = true;
 	
 	//Matrix Y
 	HashMap<Integer, ArrayList<Integer>> mtrY = new HashMap<Integer, ArrayList<Integer>>();
@@ -360,21 +360,40 @@ public class ParseInput {
 	}
 	
 	public void convertSolu(){
-		for( int i = 0; i < this.soluList.size(); i++ ) {
-			ArrayList tmp = this.soluList.get(i);
-			HashMap<Integer,ArrayList<Unit>> solu = new HashMap<Integer,ArrayList<Unit>>();
-			for( int j = 0; j < tmp.size(); j++ ) {
-				ArrayList<Integer> rowY = mtrY.get(tmp.get(j));
-				ArrayList<Unit> tile = new ArrayList<Unit>();
-				int id = rowY.get(0);
-				for( int k = 1; k < rowY.size(); k++ ) {
-					int unitId = rowY.get(k)-this.tiles.length;
-					Unit unit = new Unit(this.board.pX[0][unitId],this.board.pY[0][unitId],this.board.pCh[0][unitId]);
-					tile.add(unit);
+		if (brute == false) {
+			for (int i = 0; i < this.soluList.size(); i++) {
+				ArrayList tmp = this.soluList.get(i);
+				HashMap<Integer, ArrayList<Unit>> solu = new HashMap<Integer, ArrayList<Unit>>();
+				for (int j = 0; j < tmp.size(); j++) {
+					ArrayList<Integer> rowY = mtrY.get(tmp.get(j));
+					ArrayList<Unit> tile = new ArrayList<Unit>();
+					int id = rowY.get(0);
+					for (int k = 1; k < rowY.size(); k++) {
+						int unitId = rowY.get(k) - this.tiles.length;
+						Unit unit = new Unit(this.board.pX[0][unitId],
+								this.board.pY[0][unitId],
+								this.board.pCh[0][unitId]);
+						tile.add(unit);
+					}
+					solu.put(id, tile);
 				}
-				solu.put(id, tile);
+				this.soluInterface.add(solu);
 			}
-			this.soluInterface.add(solu);
+		}
+		else {
+			for (int i = 0; i < this.bruteForceSolu.size(); i++) {
+				HashMap<Integer, ArrayList<Unit>> solu = new HashMap<Integer, ArrayList<Unit>>();
+				for(int j = 0; j < this.tiles.length; j++ ) {
+					ArrayList<Unit> tile = new ArrayList<Unit>();
+					solu.put(j, tile);
+				}
+				for( int j = 0; j < bruteForceSolu.get(i).size(); j++ ) {
+					int id = bruteForceSolu.get(i).get(j)-1;
+					Unit unit = new Unit(this.board.pX[0][j], this.board.pY[0][j], this.board.pCh[0][j]);
+					solu.get(id).add(unit);
+				}
+				this.soluInterface.add(solu);
+			}
 		}
 		int index = 1;
 	}
